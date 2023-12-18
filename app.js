@@ -36,6 +36,20 @@ app.get("/getallbarang", (req, res) => {
   });
 });
 
+app.get("/get20barang/:page", (req, res) => {
+  const hitungOffset = 20 * (Number(req.params.page) - 1);
+  connection.query(
+    "SELECT * FROM barang LIMIT 20 OFFSET " + hitungOffset,
+    function (error, results) {
+      if (error) return error;
+      res.json({
+        pesan: "Ok",
+        data: results,
+      });
+    }
+  );
+});
+
 app.get("/barang/:id", function (req, res) {
   connection.query(
     `SELECT * FROM barang WHERE id='${req.params.id}'`,
@@ -49,9 +63,10 @@ app.get("/barang/:id", function (req, res) {
   );
 });
 
-app.get("/kategori/:kategori", function (req, res) {
+app.get("/kategori/:kategori/:page", function (req, res) {
+  const hitungOffset = 20 * (Number(req.params.page) - 1);
   connection.query(
-    `SELECT * FROM barang WHERE kategori='${req.params.kategori}'`,
+    `SELECT * FROM barang WHERE kategori='${req.params.kategori}' LIMIT 20 OFFSET ${hitungOffset}`,
     function (error, results) {
       if (error) return error;
       res.json({
@@ -62,9 +77,10 @@ app.get("/kategori/:kategori", function (req, res) {
   );
 });
 
-app.get("/subkategori/:subkategori", function (req, res) {
+app.get("/subkategori/:subkategori/:page", function (req, res) {
+  const hitungOffset = 20 * (Number(req.params.page) - 1);
   connection.query(
-    `SELECT * FROM barang WHERE subkategori='${req.params.subkategori}'`,
+    `SELECT * FROM barang WHERE subkategori='${req.params.subkategori}' LIMIT 20 OFFSET ${hitungOffset}`,
     function (error, results) {
       if (error) return error;
       res.json({
@@ -78,6 +94,20 @@ app.get("/subkategori/:subkategori", function (req, res) {
 app.post("/cari", function (req, res) {
   connection.query(
     `SELECT * FROM barang WHERE nama LIKE '%${req.body.cari}%'`,
+    function (error, results) {
+      if (error) return error;
+      res.json({
+        pesan: "ok",
+        data: results,
+      });
+    }
+  );
+});
+
+//-------------- gambar barang --------------//
+app.get("/gambar/:id", function (req, res) {
+  connection.query(
+    `SELECT * FROM gambar_barang WHERE id='${req.params.id}'`,
     function (error, results) {
       if (error) return error;
       res.json({
