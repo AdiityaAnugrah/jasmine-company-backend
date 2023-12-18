@@ -63,6 +63,18 @@ app.get("/barang/:id", function (req, res) {
   );
 });
 
+app.get("/kategori/:kategori", function (req, res) {
+  connection.query(
+    `SELECT * FROM barang WHERE kategori='${req.params.kategori}'`,
+    function (error, results) {
+      if (error) return error;
+      res.json({
+        pesan: "ok",
+        data: results,
+      });
+    }
+  );
+});
 app.get("/kategori/:kategori/:page", function (req, res) {
   const hitungOffset = 20 * (Number(req.params.page) - 1);
   connection.query(
