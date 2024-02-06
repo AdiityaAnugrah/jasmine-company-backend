@@ -188,6 +188,17 @@ app.get("/getkec/:kab", async (req, res) => {
         data: hasil,
     });
 });
+app.get("/getkode/:kec", async (req, res) => {
+    const respon = await fetch(
+        "http://www.dakotacargo.co.id/api/api_glb_M_kodepos.asp?key=15f6a51696a8b034f9ce366a6dc22138&id=11022019000001&aKec=" +
+            req.params.kec
+    );
+    const hasil = await respon.json();
+    res.json({
+        pesan: "Ok",
+        data: hasil,
+    });
+});
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
